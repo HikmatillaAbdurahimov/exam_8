@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+		<main class="vh-100 bg-body-tertiary">
+			<div class="container m-auto mt-5 row gap-2 justify-content-center">
+				<h1 class="d-flex justify-content-center mb-10">Products</h1>
+				{% for page in pages %}
+					<div class="card col-3 p-0">
+						<img
+							class="card-img-top"
+							src="{{ page.image.url }}"
+							alt="Card image cap"
+						/>
+						<div class="card-body">
+							<h3>
+								<a class="text-decoration-none" href="{% url 'detail' page.id %}">{{ page.title }}</a>
+							</h3>
+							<p class="card-text">
+								{{ page.description }}
+							</p>
+							<div class="d-flex flex-column gap-2">
+								<div class="d-flex align-items-center gap-2">
+									<b>
+										<small> Old price: </small>
+									</b>
+									<small class="text-decoration-line-through">
+										<b class="text-danger">$ {{page.old_price}}</b>
+									</small>
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<b>
+										<small>Current price: </small>
+									</b>
+									<small class="">
+										<b class="text-success">$ {{ page.price }}</b>
+									</small>
+								</div>
+							</div>
+							{% if request.user.is_authenticated %}
+								<a
+									href="{% url 'cart' %}"
+									class="mt-2 w-100 d-flex align-items-center justify-content-center font-bold btn btn-warning"
+								>
+									<i class="bi bi-cart-plus"></i>
+									Add to cart
+								</a>
+							{% endif %}
+							{% if not request.user.is_authenticated %}
+									<b>
+										Pleas <a href="{% url 'login' %}" > Log in </a> Add to cart
+									</b>
+							{% endif %}
+						</div>
+					</div>
+				{% endfor %}
+			<div class="d-flex justify-content-center mt-5">
+				<nav aria-label="...">
+					<ul class="pagination">
+						<div class="col-12">
+							<div class="pagination d-flex justify-content-center mt-5">
+								{% if pages.has_previous %}
+									<a href="?page={{ pages.previous_page_number }}" class="rounded">&laquo;</a>
+								{% endif %}
+								<a href="#" class="active rounded">{{ pages.number }}</a>
+								{% if pages.has_next %}
+									<a href="?page={{ pages.next_page_number }}" class="rounded">&raquo;</a>
+								{% endif %}
+							</div>
+						</div>
+					</ul>
+				</nav>
+			</div>
+		</main>
+
+
+
+{% endblock %}

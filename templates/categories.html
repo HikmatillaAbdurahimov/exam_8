@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+
+		<main class="">
+			<div class="container m-auto mt-5 row gap-2 justify-content-center">
+				{% for page in pages %}
+					<div class="card col-3 p-0">
+						<img
+							class="card-img-top"
+							src="{{ page.image.url }}"
+							alt="Card image cap"
+						/>
+						<div class="card-body">
+							<h3>
+								<a class="text-decoration-none" href="{% url 'products' page.id %}"
+									>{{ page.title }}</a
+								>
+							</h3>
+							<p class="card-text">
+								{{ page.description }}
+							</p>
+							<div class="d-flex flex-column gap-2"></div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="d-flex justify-content-center mt-5">
+				<nav aria-label="...">
+					<ul class="pagination">
+						<div class="col-12">
+							<div class="pagination d-flex justify-content-center mt-5">
+								{% if pages.has_previous %}
+								<a href="{% url 'categories' %}?page={{ pages.previous_page_number }}" class="rounded">&laquo;</a>
+								{% endif %}
+								<a href="#" class="active rounded">{{ pages.number }}</a>
+								{% if pages.has_next %}
+								<a href="{% url 'categories' %}?page={{ pages.next_page_number }}" class="rounded">&raquo;</a>
+								{% endif %}
+							</div>
+						</div>
+					</ul>
+				</nav>
+			</div>
+		</main>
+
+{% endblock %}
